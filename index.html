@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ハヤちゃんごはんタイム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-board">
+        <div id="background-decor"></div>
+
+        <div id="title-banner"><span>ハヤちゃんごはんタイム</span></div>
+
+        <div id="heading-left" class="list-heading">ごはん・おかず</div>
+        <div id="list-left" class="food-list"></div>
+
+        <div id="heading-right" class="list-heading">デザート</div>
+        <div id="list-right" class="food-list"></div>
+
+        <div id="table"></div>
+        <div id="plate"></div>
+        <div id="plate-items-layer"></div>
+
+        <div id="child-face">
+            <img id="child-face-img" alt="こども">
+        </div>
+
+        <button id="ready-button" class="big-round-button big-round-button--green" type="button">はいどうぞ</button>
+
+        <div id="drag-layer"></div>
+
+        <div id="finished-overlay">
+            <div id="finished-panel">
+                <span>ごちそうさま！</span>
+                <button id="restart-button" class="big-round-button big-round-button--orange" type="button">もういちど あそぶ</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
