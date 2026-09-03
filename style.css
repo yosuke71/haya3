@@ -100,25 +100,6 @@ html, body {
     z-index: 20;
 }
 
-#title-banner::before,
-#title-banner::after {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 36px;
-    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25));
-}
-
-#title-banner::before {
-    content: '🍴';
-    left: -54px;
-}
-
-#title-banner::after {
-    content: '🥄';
-    right: -54px;
-}
-
 #title-banner span {
     position: relative;
     font-size: 44px;
@@ -173,8 +154,8 @@ html, body {
     height: 44px;
     border-radius: 50%;
     background: #fff;
-    padding: 4px;
-    object-fit: contain;
+    padding: 1px;
+    object-fit: cover;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
@@ -189,7 +170,7 @@ html, body {
 
 .list-heading-sub {
     margin: 0;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--color-brown-500);
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -476,13 +457,13 @@ html, body {
     position: absolute;
     left: 16px;
     top: 1052px;
-    width: 1410px;
+    width: 1045px;
     height: 108px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    padding: 0 26px;
     background: rgba(255, 250, 240, 0.92);
     border: 3px dashed var(--color-orange-400);
     border-radius: var(--radius-lg);
