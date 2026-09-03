@@ -5,7 +5,7 @@
 import * as soundManager from './soundManager.js';
 
 export const DRAG_OFFSET_X = 0;
-export const DRAG_OFFSET_Y = -50; // 指より約50px上へ表示
+export const DRAG_OFFSET_Y = -70; // 指より上へ表示（指と重ならない距離）
 const ICON_SIZE = 140; // style.css の .food-icon / .plate-item と一致させること
 
 let dragLayerEl;

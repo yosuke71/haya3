@@ -4,6 +4,7 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    -webkit-touch-callout: none;
 }
 
 html, body {
@@ -25,7 +26,7 @@ html, body {
     height: 1200px;
     transform: translate(-50%, -50%);
     transform-origin: center center;
-    background: radial-gradient(circle at 50% 0%, #fff6e6 0%, #ffe9c2 45%, #ffd699 100%);
+    background: #ffe9c2;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
@@ -145,7 +146,7 @@ html, body {
     position: relative;
     z-index: 3;
     margin-top: -25px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: #6b4a2b;
     text-shadow:
@@ -229,10 +230,11 @@ html, body {
     touch-action: none;
     cursor: grab;
     transition: transform 0.15s ease;
+    transform: scale(1.2);
 }
 
 .plate-item.dragging {
-    transform: scale(1.05);
+    transform: scale(1.26);
     cursor: grabbing;
 }
 
@@ -299,9 +301,25 @@ html, body {
     box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 16px 24px rgba(0, 0, 0, 0.25);
 }
 
+.big-round-button--blue {
+    background: linear-gradient(180deg, #7ec8f0 0%, #4a9fd4 100%);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 16px 24px rgba(0, 0, 0, 0.25);
+}
+
+#back-to-start-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 240px;
+    height: 64px;
+    font-size: 24px;
+    border-radius: 32px;
+    z-index: 25;
+}
+
 #ready-button {
     position: absolute;
-    left: 1560px;
+    left: 1440px;
     top: 1030px;
     width: 320px;
     height: 130px;
@@ -326,12 +344,12 @@ html, body {
 
 .dragging-ghost {
     position: absolute;
-    transform: scale(1.05);
+    transform: scale(1.26);
 }
 
-/* ===== 完食演出 ===== */
+/* ===== オーバーレイ（開始画面・完食画面 共通） ===== */
 
-#finished-overlay {
+.game-overlay {
     position: absolute;
     inset: 0;
     display: flex;
@@ -344,12 +362,12 @@ html, body {
     z-index: 500;
 }
 
-#finished-overlay.is-visible {
+.game-overlay.is-visible {
     opacity: 1;
     pointer-events: auto;
 }
 
-#finished-panel {
+.overlay-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -361,14 +379,55 @@ html, body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-#finished-panel span {
+.overlay-panel span {
     font-size: 72px;
     font-weight: 900;
     color: #ff8a3d;
+    text-align: center;
 }
 
-#restart-button {
+#restart-button,
+#start-button {
     width: 320px;
     height: 110px;
     font-size: 34px;
+}
+
+/* ===== 横画面案内（縦向きで開いた時に表示） ===== */
+
+#rotate-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: #2b2118;
+    color: #fff;
+    text-align: center;
+}
+
+#rotate-overlay span {
+    font-size: 96px;
+    animation: rotate-hint 1.6s ease-in-out infinite;
+}
+
+#rotate-overlay p {
+    margin: 0;
+    padding: 0 40px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+@keyframes rotate-hint {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+}
+
+@media (orientation: portrait) {
+    #rotate-overlay {
+        display: flex;
+    }
 }

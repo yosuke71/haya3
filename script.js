@@ -5,6 +5,15 @@ import * as uiManager from './uiManager.js';
 import * as dragManager from './dragManager.js';
 import * as soundManager from './soundManager.js';
 
+// 「はいどうぞ」押下：一覧を先に封じ、「いただきます」の画像・音声を最後まで
+// 再生してから、実際に食べさせるモード（EATING）へ進む。
+async function handleServe() {
+    uiManager.lockForServing();
+    uiManager.setChildItadakimasu();
+    await soundManager.playItadakimasu();
+    gameState.startEating();
+}
+
 async function handleFeedItem(uid) {
     soundManager.playEat();
     uiManager.setChildMouthOpen(true);
@@ -47,14 +56,44 @@ function init() {
 
     uiManager.getReadyButtonElement().addEventListener('click', () => {
         soundManager.playButton();
-        soundManager.playStart();
-        gameState.startEating();
+        handleServe();
     });
 
     uiManager.getRestartButtonElement().addEventListener('click', () => {
         soundManager.playButton();
         gameState.reset();
     });
+
+    uiManager.getStartButtonElement().addEventListener('click', () => {
+        soundManager.playButton();
+        requestFullscreen();
+        lockLandscape();
+        uiManager.hideStartOverlay();
+    });
+
+    uiManager.getBackToStartButtonElement().addEventListener('click', () => {
+        soundManager.playButton();
+        gameState.reset();
+        uiManager.showStartOverlay();
+    });
+
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+function requestFullscreen() {
+    const el = document.documentElement;
+    const request = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (!request) return;
+    const result = request.call(el);
+    if (result && typeof result.catch === 'function') {
+        result.catch(() => {});
+    }
+}
+
+function lockLandscape() {
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);

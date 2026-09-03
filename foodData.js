@@ -9,6 +9,8 @@ export const FOOD_IMAGE_DIR = {
 export const CHILD_IMAGE_DIR = 'assets/images/child/';
 
 export const CHILD_IMAGES = {
+    waiting: `${CHILD_IMAGE_DIR}child_waiting.png`,
+    itadakimasu: `${CHILD_IMAGE_DIR}child_itadakimasu.png`,
     mouthClosed: `${CHILD_IMAGE_DIR}child_mouth_closed.png`,
     mouthOpen: `${CHILD_IMAGE_DIR}child_mouth_open.png`,
 };

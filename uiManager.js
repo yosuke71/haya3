@@ -8,7 +8,7 @@ export const LAYOUT = {
     boardWidth: 1920,
     boardHeight: 1200,
     plate: { centerX: 960, centerY: 860, radiusX: 333, radiusY: 188 },
-    mouth: { centerX: 960, centerY: 541, hitRx: 132, hitRy: 88 },
+    mouth: { centerX: 968, centerY: 428, hitRx: 95, hitRy: 65 },
 };
 
 const EAT_ANIMATION_DURATION = 400; // ms
@@ -22,6 +22,9 @@ let childFaceContainerEl;
 let readyButtonEl;
 let restartButtonEl;
 let finishedOverlayEl;
+let startOverlayEl;
+let startButtonEl;
+let backToStartButtonEl;
 
 const plateItemElements = new Map(); // uid -> element
 
@@ -100,18 +103,26 @@ function handlePlateRemove(item) {
     plateItemElements.delete(item.uid);
 }
 
+// PREPARING中のみ、皿に食べ物が1つも無ければ「はいどうぞ」を押せなくする
+function updateReadyButtonAvailability() {
+    if (gameState.getStatus() !== GameStatus.PREPARING) return;
+    readyButtonEl.disabled = gameState.getPlateItems().length === 0;
+}
+
 function handleStatusChange(status) {
     if (status === GameStatus.EATING) {
         listLeftEl.classList.add('is-disabled');
         listRightEl.classList.add('is-disabled');
         readyButtonEl.disabled = true;
+        setChildMouthOpen(false);
     } else if (status === GameStatus.FINISHED) {
         finishedOverlayEl.classList.add('is-visible');
     } else if (status === GameStatus.PREPARING) {
         listLeftEl.classList.remove('is-disabled');
         listRightEl.classList.remove('is-disabled');
-        readyButtonEl.disabled = false;
         finishedOverlayEl.classList.remove('is-visible');
+        setChildWaiting();
+        updateReadyButtonAvailability();
     }
 }
 
@@ -125,18 +136,29 @@ export function initUI({ onListItemReady, onPlateItemReady }) {
     readyButtonEl = document.getElementById('ready-button');
     restartButtonEl = document.getElementById('restart-button');
     finishedOverlayEl = document.getElementById('finished-overlay');
+    startOverlayEl = document.getElementById('start-overlay');
+    startButtonEl = document.getElementById('start-button');
+    backToStartButtonEl = document.getElementById('back-to-start-button');
 
     childFaceImgEl.addEventListener('error', () => {
         childFaceContainerEl.classList.add('child-face--fallback');
     });
-    setChildMouthOpen(false);
+    setChildWaiting();
 
     renderFoodLists(onListItemReady);
 
-    gameState.addEventListener('plate-add', (e) => handlePlateAdd(e.detail, onPlateItemReady));
+    gameState.addEventListener('plate-add', (e) => {
+        handlePlateAdd(e.detail, onPlateItemReady);
+        updateReadyButtonAvailability();
+    });
     gameState.addEventListener('plate-move', (e) => handlePlateMove(e.detail));
-    gameState.addEventListener('plate-remove', (e) => handlePlateRemove(e.detail));
+    gameState.addEventListener('plate-remove', (e) => {
+        handlePlateRemove(e.detail);
+        updateReadyButtonAvailability();
+    });
     gameState.addEventListener('status-change', (e) => handleStatusChange(e.detail.status));
+
+    updateReadyButtonAvailability();
 
     applyScale();
     window.addEventListener('resize', applyScale);
@@ -183,6 +205,25 @@ export function setChildMouthOpen(isOpen) {
     childFaceContainerEl.classList.toggle('mouth-open', isOpen);
 }
 
+export function setChildWaiting() {
+    childFaceImgEl.src = CHILD_IMAGES.waiting;
+    childFaceImgEl.alt = 'こども（まちどおしい）';
+    childFaceContainerEl.classList.remove('mouth-open');
+}
+
+export function setChildItadakimasu() {
+    childFaceImgEl.src = CHILD_IMAGES.itadakimasu;
+    childFaceImgEl.alt = 'こども（いただきます）';
+    childFaceContainerEl.classList.remove('mouth-open');
+}
+
+// 「はいどうぞ」直後、いただきます演出中に一覧・ボタン操作を先んじて封じる
+export function lockForServing() {
+    listLeftEl.classList.add('is-disabled');
+    listRightEl.classList.add('is-disabled');
+    readyButtonEl.disabled = true;
+}
+
 export function playEatAnimation(uid) {
     const el = plateItemElements.get(uid);
     if (!el) return Promise.resolve();
@@ -198,4 +239,20 @@ export function getReadyButtonElement() {
 
 export function getRestartButtonElement() {
     return restartButtonEl;
+}
+
+export function getStartButtonElement() {
+    return startButtonEl;
+}
+
+export function hideStartOverlay() {
+    startOverlayEl.classList.remove('is-visible');
+}
+
+export function showStartOverlay() {
+    startOverlayEl.classList.add('is-visible');
+}
+
+export function getBackToStartButtonElement() {
+    return backToStartButtonEl;
 }

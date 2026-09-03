@@ -28,14 +28,28 @@
 
         <button id="ready-button" class="big-round-button big-round-button--green" type="button">はいどうぞ</button>
 
+        <button id="back-to-start-button" class="big-round-button big-round-button--blue" type="button">さいしょに もどる</button>
+
         <div id="drag-layer"></div>
 
-        <div id="finished-overlay">
-            <div id="finished-panel">
+        <div id="finished-overlay" class="game-overlay">
+            <div class="overlay-panel">
                 <span>ごちそうさま！</span>
                 <button id="restart-button" class="big-round-button big-round-button--orange" type="button">もういちど あそぶ</button>
             </div>
         </div>
+
+        <div id="start-overlay" class="game-overlay is-visible">
+            <div class="overlay-panel">
+                <span>ハヤちゃんごはんタイム</span>
+                <button id="start-button" class="big-round-button big-round-button--green" type="button">ゲームかいし</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rotate-overlay">
+        <span>📱⟳</span>
+        <p>がめんを よこむきに してください</p>
     </div>
 
     <script type="module" src="script.js"></script>

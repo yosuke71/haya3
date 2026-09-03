@@ -85,9 +85,9 @@ class GameState extends EventTarget {
         this._setStatus(GameStatus.FINISHED);
     }
 
-    // 「もういちど あそぶ」で最初の状態に戻す
+    // 「もういちど あそぶ」「さいしょに もどる」で最初の状態に戻す
     reset() {
-        this.plateItems = [];
+        [...this.plateItems].forEach((item) => this.removePlateItem(item.uid));
         this._setStatus(GameStatus.PREPARING);
     }
 

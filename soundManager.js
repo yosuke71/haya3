@@ -1,5 +1,14 @@
-// 効果音管理（Web Audio API のみ・音声ファイル不使用）
+// 効果音管理。基本はWeb Audio APIによる合成音。
+// 「いただきます」「食べる音」「ごちそうさま」のみ収録済みの音声ファイルを再生する。
 // AudioContext は初回のサウンド再生要求（＝ユーザーの初回操作）時に生成する。
+
+const ITADAKIMASU_AUDIO_PATH = 'assets/sounds/itadakimasu.m4a';
+let itadakimasuAudio = null;
+
+const EAT_AUDIO_PATH = 'assets/sounds/amu.mp3';
+
+const COMPLETE_AUDIO_PATH = 'assets/sounds/gochisousama.m4a';
+let completeAudio = null;
 
 let audioContext = null;
 
@@ -34,40 +43,32 @@ function playTone(freq, startDelay, duration, { type = 'sine', peakGain = 0.25 }
     oscillator.stop(startTime + duration + 0.02);
 }
 
-function playNoiseBurst(startDelay, duration, { peakGain = 0.3, filterFreq = 1200 } = {}) {
-    const ctx = ensureAudioContext();
-    const startTime = ctx.currentTime + startDelay;
-    const bufferSize = Math.ceil(ctx.sampleRate * duration);
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-    }
-
-    const noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = buffer;
-
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(filterFreq, startTime);
-
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(peakGain, startTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-
-    noiseSource.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    noiseSource.start(startTime);
-    noiseSource.stop(startTime + duration + 0.02);
-}
-
 // ゲーム開始（「はいどうぞ」を押した瞬間）
 export function playStart() {
     playTone(523.25, 0, 0.15, { type: 'triangle' }); // C5
     playTone(659.25, 0.12, 0.15, { type: 'triangle' }); // E5
     playTone(783.99, 0.24, 0.25, { type: 'triangle' }); // G5
+}
+
+// 「いただきます」音声。再生が終わるまで待てるよう Promise を返す。
+// 再生に失敗した場合もゲーム進行を止めないよう、その場で解決する。
+export function playItadakimasu() {
+    return new Promise((resolve) => {
+        if (!itadakimasuAudio) {
+            itadakimasuAudio = new Audio(ITADAKIMASU_AUDIO_PATH);
+        }
+        const audio = itadakimasuAudio;
+        audio.currentTime = 0;
+
+        const finish = () => {
+            audio.removeEventListener('ended', finish);
+            audio.removeEventListener('error', finish);
+            resolve();
+        };
+        audio.addEventListener('ended', finish);
+        audio.addEventListener('error', finish);
+        audio.play().catch(finish);
+    });
 }
 
 // 食べ物を指でつまんだ瞬間
@@ -86,8 +87,10 @@ export function playButton() {
 }
 
 // 食べ物が口に届いた瞬間
+// マルチタッチで連続再生されても途切れないよう、毎回新しい Audio を生成する。
 export function playEat() {
-    playNoiseBurst(0, 0.18, { peakGain: 0.3, filterFreq: 1500 });
+    const audio = new Audio(EAT_AUDIO_PATH);
+    audio.play().catch(() => {});
 }
 
 // もぐもぐ（咀嚼音）
@@ -98,8 +101,9 @@ export function playMogu() {
 
 // ごちそうさま（完食）
 export function playComplete() {
-    playTone(523.25, 0, 0.18, { type: 'triangle' }); // C5
-    playTone(659.25, 0.15, 0.18, { type: 'triangle' }); // E5
-    playTone(783.99, 0.3, 0.18, { type: 'triangle' }); // G5
-    playTone(1046.5, 0.45, 0.4, { type: 'triangle' }); // C6
+    if (!completeAudio) {
+        completeAudio = new Audio(COMPLETE_AUDIO_PATH);
+    }
+    completeAudio.currentTime = 0;
+    completeAudio.play().catch(() => {});
 }
