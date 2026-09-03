@@ -179,7 +179,7 @@ html, body {
 }
 
 .list-heading-badge span {
-    font-size: 26px;
+    font-size: 36px;
     font-weight: 900;
     color: #fff;
     letter-spacing: 0.03em;
@@ -474,22 +474,22 @@ html, body {
 
 #serve-hint {
     position: absolute;
-    left: 620px;
+    left: 612px;
     top: 1030px;
-    width: 800px;
-    height: 130px;
+    width: 818px;
+    height: 150px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 32px;
+    padding: 0 20px;
     background: rgba(255, 250, 240, 0.92);
     border: 3px dashed var(--color-orange-400);
     border-radius: var(--radius-lg);
     color: var(--color-brown-700);
-    font-size: 26px;
+    font-size: 40px;
     font-weight: 700;
-    line-height: 1.4;
+    line-height: 1.25;
     text-align: center;
     box-shadow: var(--shadow-panel);
     z-index: 20;
