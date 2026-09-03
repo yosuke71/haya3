@@ -1,4 +1,35 @@
-/* 数値は uiManager.js の LAYOUT（皿・口の当たり判定）と一致させること */
+/* 数値は uiManager.js の LAYOUT（皿・口の当たり判定）と一致させること。
+   画像・アイコンのサイズと位置に関わる数値（幅・高さ・left/top・transformのscale値）は
+   見た目の刷新においても一切変更しないこと。変更してよいのは色・影・グラデーション・
+   装飾・タイポグラフィなど「見え方」に限る。 */
+
+:root {
+    --color-bg: #ffe9c2;
+    --color-cream: #fffaf0;
+    --color-cream-soft: #fff3de;
+    --color-brown-900: #4a2f18;
+    --color-brown-700: #6b4a2b;
+    --color-brown-500: #a56b2e;
+    --color-orange-500: #ff8a3d;
+    --color-orange-400: #ffb85c;
+    --color-orange-300: #ffd9a0;
+    --color-green-500: #4fb830;
+    --color-green-400: #7ed957;
+    --color-blue-500: #4a9fd4;
+    --color-blue-400: #7ec8f0;
+
+    --radius-sm: 16px;
+    --radius-md: 28px;
+    --radius-lg: 36px;
+    --radius-xl: 44px;
+
+    --shadow-panel:
+        0 14px 28px rgba(74, 47, 24, 0.16),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.65),
+        inset 0 2px 0 rgba(255, 255, 255, 0.9);
+    --shadow-button-rest: 0 10px 0 rgba(0, 0, 0, 0.15), 0 18px 26px rgba(74, 47, 24, 0.3);
+    --shadow-button-active: 0 4px 0 rgba(0, 0, 0, 0.15), 0 8px 14px rgba(0, 0, 0, 0.22);
+}
 
 * {
     box-sizing: border-box;
@@ -13,7 +44,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background: #2b2118;
+    background: #2a1a0f;
     touch-action: none;
     font-family: 'Hiragino Maru Gothic ProN', 'BIZ UDPGothic', 'Yu Gothic', 'Meiryo', sans-serif;
 }
@@ -26,10 +57,14 @@ html, body {
     height: 1200px;
     transform: translate(-50%, -50%);
     transform-origin: center center;
-    background: #ffe9c2;
+    background: var(--color-bg);
     overflow: hidden;
     border-radius: 12px;
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    outline: 10px solid var(--color-cream);
+    outline-offset: -10px;
+    box-shadow:
+        0 0 0 3px rgba(74, 47, 24, 0.25) inset,
+        0 30px 90px rgba(0, 0, 0, 0.55);
 }
 
 /* ===== 背景の絵本風装飾 ===== */
@@ -39,9 +74,12 @@ html, body {
     inset: 0;
     pointer-events: none;
     background-image:
-        radial-gradient(circle 90px at 120px 1080px, #ffd1e6 0%, transparent 70%),
-        radial-gradient(circle 70px at 1800px 1060px, #cdeeff 0%, transparent 70%),
-        radial-gradient(circle 60px at 1750px 140px, #d8ffd1 0%, transparent 70%);
+        radial-gradient(circle 100px at 130px 1090px, rgba(255, 209, 230, 0.9) 0%, transparent 70%),
+        radial-gradient(circle 80px at 1800px 1060px, rgba(205, 238, 255, 0.9) 0%, transparent 70%),
+        radial-gradient(circle 70px at 1760px 150px, rgba(216, 255, 209, 0.9) 0%, transparent 70%),
+        radial-gradient(circle 46px at 1660px 1150px, rgba(255, 244, 199, 0.85) 0%, transparent 70%),
+        radial-gradient(circle 36px at 230px 90px, rgba(255, 224, 179, 0.7) 0%, transparent 70%),
+        radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
 }
 
 /* ===== タイトル ===== */
@@ -52,23 +90,46 @@ html, body {
     top: 22px;
     transform: translateX(-50%);
     padding: 14px 56px;
-    background: linear-gradient(180deg, #ffb85c 0%, #ff9642 100%);
-    border: 6px solid #fff;
+    background: linear-gradient(180deg, var(--color-orange-400) 0%, var(--color-orange-500) 100%);
+    border: 6px solid var(--color-cream);
     border-radius: 999px;
-    box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12), 0 10px 18px rgba(0, 0, 0, 0.18);
+    box-shadow:
+        0 8px 0 rgba(0, 0, 0, 0.14),
+        0 14px 24px rgba(74, 47, 24, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
     z-index: 20;
 }
 
+#title-banner::before,
+#title-banner::after {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 36px;
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25));
+}
+
+#title-banner::before {
+    content: '🍴';
+    left: -54px;
+}
+
+#title-banner::after {
+    content: '🥄';
+    right: -54px;
+}
+
 #title-banner span {
+    position: relative;
     font-size: 44px;
     font-weight: 900;
     color: #ffffff;
     letter-spacing: 0.05em;
-    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+    text-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
     white-space: nowrap;
 }
 
-/* ===== 一覧（左：ごはん・おかず／右：デザート・フルーツ） ===== */
+/* ===== 一覧(左:ごはん・おかず/右:デザート・フルーツ) ===== */
 
 .list-heading {
     position: absolute;
@@ -77,8 +138,9 @@ html, body {
     text-align: center;
     font-size: 32px;
     font-weight: 900;
-    color: #a56b2e;
-    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7);
+    color: var(--color-brown-500);
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.03em;
     z-index: 16;
 }
 
@@ -98,10 +160,10 @@ html, body {
     display: grid;
     gap: 0;
     padding: 6px;
-    background: rgba(255, 255, 255, 0.55);
-    border: 4px solid rgba(255, 255, 255, 0.8);
-    border-radius: 28px;
-    box-shadow: inset 0 0 0 2px rgba(255, 180, 120, 0.3);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.45) 100%);
+    border: 4px solid rgba(255, 255, 255, 0.85);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-panel);
     transition: opacity 0.3s ease, filter 0.3s ease;
     z-index: 15;
 }
@@ -119,8 +181,8 @@ html, body {
 }
 
 .food-list.is-disabled {
-    opacity: 0.45;
-    filter: grayscale(0.6);
+    opacity: 0.5;
+    filter: grayscale(0.5) brightness(0.96);
     pointer-events: none;
 }
 
@@ -148,13 +210,13 @@ html, body {
     margin-top: -25px;
     font-size: 20px;
     font-weight: 700;
-    color: #6b4a2b;
+    color: var(--color-brown-700);
     text-shadow:
         -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff,
         0 0 6px #fff, 0 0 6px #fff;
 }
 
-/* ===== 食べ物アイコン（一覧・皿・ドラッグ中で共通） ===== */
+/* ===== 食べ物アイコン(一覧・皿・ドラッグ中で共通) ===== */
 
 .food-icon {
     width: 140px;
@@ -162,7 +224,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 8px 8px rgba(74, 47, 24, 0.3));
     pointer-events: none;
 }
 
@@ -174,11 +236,11 @@ html, body {
 }
 
 .food-icon--fallback {
-    background: #ffd699;
+    background: var(--color-orange-300);
     border-radius: 50%;
     font-size: 42px;
     font-weight: 900;
-    color: #8a5a2b;
+    color: var(--color-brown-500);
 }
 
 /* ===== テーブル・皿 ===== */
@@ -189,15 +251,27 @@ html, body {
     top: 683px;
     width: 708px;
     height: 437px;
-    border-radius: 32px;
-    background: repeating-linear-gradient(
-        90deg,
-        #c98a4b 0px,
-        #c98a4b 26px,
-        #bf7d3f 26px,
-        #bf7d3f 52px
-    );
-    box-shadow: 0 14px 0 rgba(0, 0, 0, 0.15), 0 20px 30px rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-lg);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.05) 0px,
+            rgba(0, 0, 0, 0.05) 2px,
+            transparent 2px,
+            transparent 52px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            #d3985a 0px,
+            #c98a4b 26px,
+            #bf7d3f 26px,
+            #a86c36 52px
+        );
+    box-shadow:
+        inset 0 4px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -18px 30px rgba(0, 0, 0, 0.2),
+        0 14px 0 rgba(0, 0, 0, 0.18),
+        0 26px 40px rgba(74, 47, 24, 0.35);
     z-index: 6;
 }
 
@@ -208,12 +282,13 @@ html, body {
     width: 666px;
     height: 375px;
     border-radius: 50%;
-    background: radial-gradient(ellipse at 50% 42%, #ffffff 0%, #f3f3f3 55%, #dcdcdc 100%);
+    background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f7f7f7 55%, #e2e2e2 85%, #d2d2d2 100%);
     box-shadow:
-        inset 0 -10px 20px rgba(0, 0, 0, 0.08),
-        inset 0 8px 14px rgba(255, 255, 255, 0.9),
-        0 12px 0 rgba(0, 0, 0, 0.08),
-        0 18px 26px rgba(0, 0, 0, 0.25);
+        inset 0 -12px 22px rgba(0, 0, 0, 0.1),
+        inset 0 10px 16px rgba(255, 255, 255, 0.95),
+        inset 0 0 0 6px rgba(255, 255, 255, 0.5),
+        0 14px 0 rgba(0, 0, 0, 0.1),
+        0 24px 36px rgba(74, 47, 24, 0.35);
     z-index: 9;
 }
 
@@ -253,7 +328,7 @@ html, body {
     width: 708px;
     height: 708px;
     z-index: 5;
-    filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 14px 18px rgba(74, 47, 24, 0.28));
 }
 
 #child-face img {
@@ -267,14 +342,15 @@ html, body {
 }
 
 #child-face.child-face--fallback {
-    background: #ffd9a0;
+    background: var(--color-orange-300);
     border-radius: 50%;
-    border: 6px solid #fff;
+    border: 6px solid var(--color-cream);
 }
 
-/* ===== 大きな角丸ボタン（はいどうぞ／もういちど あそぶ 共通） ===== */
+/* ===== 大きな角丸ボタン(はいどうぞ／もういちど あそぶ 共通) ===== */
 
 .big-round-button {
+    position: relative;
     border: none;
     border-radius: 36px;
     color: #fff;
@@ -283,27 +359,36 @@ html, body {
     letter-spacing: 0.05em;
     font-family: inherit;
     cursor: pointer;
-    transition: transform 0.1s ease, opacity 0.3s ease;
+    overflow: hidden;
+    transition: transform 0.1s ease, opacity 0.3s ease, box-shadow 0.1s ease;
+}
+
+.big-round-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 55%);
+    pointer-events: none;
 }
 
 .big-round-button:active {
     transform: translateY(6px);
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15), 0 8px 14px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: var(--shadow-button-active) !important;
 }
 
 .big-round-button--green {
-    background: linear-gradient(180deg, #7ed957 0%, #4fb830 100%);
-    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 16px 24px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, var(--color-green-400) 0%, var(--color-green-500) 100%);
+    box-shadow: var(--shadow-button-rest);
 }
 
 .big-round-button--orange {
-    background: linear-gradient(180deg, #ffb85c 0%, #ff8a3d 100%);
-    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 16px 24px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, var(--color-orange-400) 0%, var(--color-orange-500) 100%);
+    box-shadow: var(--shadow-button-rest);
 }
 
 .big-round-button--blue {
-    background: linear-gradient(180deg, #7ec8f0 0%, #4a9fd4 100%);
-    box-shadow: 0 10px 0 rgba(0, 0, 0, 0.15), 0 16px 24px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, var(--color-blue-400) 0%, var(--color-blue-500) 100%);
+    box-shadow: var(--shadow-button-rest);
 }
 
 #back-to-start-button {
@@ -327,13 +412,17 @@ html, body {
 }
 
 #ready-button:disabled {
-    background: linear-gradient(180deg, #b9c7b2 0%, #9fae98 100%);
+    background: linear-gradient(180deg, #c3cfbc 0%, #a6b49e 100%);
     box-shadow: none;
     cursor: default;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
-/* ===== ドラッグ用レイヤー（つまんでいるアイコンを最前面に表示） ===== */
+#ready-button:disabled::before {
+    display: none;
+}
+
+/* ===== ドラッグ用レイヤー(つまんでいるアイコンを最前面に表示) ===== */
 
 #drag-layer {
     position: absolute;
@@ -345,9 +434,10 @@ html, body {
 .dragging-ghost {
     position: absolute;
     transform: scale(1.26);
+    filter: drop-shadow(0 12px 14px rgba(74, 47, 24, 0.4));
 }
 
-/* ===== オーバーレイ（開始画面・完食画面 共通） ===== */
+/* ===== オーバーレイ(開始画面・完食画面 共通) ===== */
 
 .game-overlay {
     position: absolute;
@@ -355,7 +445,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(60, 40, 20, 0.35);
+    background: radial-gradient(ellipse at 50% 45%, rgba(90, 61, 33, 0.55) 0%, rgba(42, 26, 15, 0.75) 100%);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease;
@@ -368,22 +458,26 @@ html, body {
 }
 
 .overlay-panel {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 36px;
     padding: 40px 80px;
-    background: #fff;
-    border: 8px solid #ffb85c;
-    border-radius: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(180deg, var(--color-cream) 0%, #fff 100%);
+    border: 8px solid var(--color-orange-400);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        0 24px 50px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 4px rgba(255, 255, 255, 0.6);
 }
 
 .overlay-panel span {
     font-size: 72px;
     font-weight: 900;
-    color: #ff8a3d;
+    color: var(--color-orange-500);
     text-align: center;
+    text-shadow: 0 3px 0 rgba(255, 255, 255, 0.6);
 }
 
 #restart-button,
@@ -393,7 +487,7 @@ html, body {
     font-size: 34px;
 }
 
-/* ===== 横画面案内（縦向きで開いた時に表示） ===== */
+/* ===== 横画面案内(縦向きで開いた時に表示) ===== */
 
 #rotate-overlay {
     display: none;
@@ -404,8 +498,8 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 24px;
-    background: #2b2118;
-    color: #fff;
+    background: radial-gradient(ellipse at 50% 40%, #4a2f18 0%, #2a1a0f 100%);
+    color: var(--color-cream);
     text-align: center;
 }
 
