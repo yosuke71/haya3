@@ -25,6 +25,10 @@ let finishedOverlayEl;
 let startOverlayEl;
 let startButtonEl;
 let backToStartButtonEl;
+let serveHintEl;
+
+const SERVE_HINT_PREPARING = 'すきなたべものを おさらにのせて、「はいどうぞ」を おしてね';
+const SERVE_HINT_EATING = 'たべものを おくちに はこんであげてね';
 
 const plateItemElements = new Map(); // uid -> element
 
@@ -131,6 +135,7 @@ function handleStatusChange(status) {
         listRightEl.classList.add('is-disabled');
         readyButtonEl.disabled = true;
         setChildMouthOpen(false);
+        serveHintEl.textContent = SERVE_HINT_EATING;
     } else if (status === GameStatus.FINISHED) {
         finishedOverlayEl.classList.add('is-visible');
     } else if (status === GameStatus.PREPARING) {
@@ -139,6 +144,7 @@ function handleStatusChange(status) {
         finishedOverlayEl.classList.remove('is-visible');
         setChildWaiting();
         updateReadyButtonAvailability();
+        serveHintEl.textContent = SERVE_HINT_PREPARING;
     }
 }
 
@@ -155,6 +161,7 @@ export function initUI({ onListItemReady, onPlateItemReady }) {
     startOverlayEl = document.getElementById('start-overlay');
     startButtonEl = document.getElementById('start-button');
     backToStartButtonEl = document.getElementById('back-to-start-button');
+    serveHintEl = document.getElementById('serve-hint');
 
     childFaceImgEl.addEventListener('error', () => {
         childFaceContainerEl.classList.add('child-face--fallback');
