@@ -475,9 +475,9 @@ html, body {
 #serve-hint {
     position: absolute;
     left: 16px;
-    top: 1030px;
+    top: 1052px;
     width: 1410px;
-    height: 130px;
+    height: 108px;
     margin: 0;
     display: flex;
     align-items: center;
