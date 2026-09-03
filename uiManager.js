@@ -60,6 +60,22 @@ function createListItemElement(foodItem) {
     return item;
 }
 
+// 見出しバッジに添える代表アイコン（ごはん・おかず側は「ごはん」、デザート側は「ショートケーキ」）
+function setListHeadingIcons() {
+    const leftIcon = document.getElementById('heading-left-icon');
+    const rightIcon = document.getElementById('heading-right-icon');
+    const mealSample = getFoodById('gohan');
+    const dessertSample = getFoodById('shortcake');
+    if (mealSample) {
+        leftIcon.src = getFoodImagePath(mealSample);
+        leftIcon.alt = mealSample.name;
+    }
+    if (dessertSample) {
+        rightIcon.src = getFoodImagePath(dessertSample);
+        rightIcon.alt = dessertSample.name;
+    }
+}
+
 function renderFoodLists(onListItemReady) {
     FOOD_ITEMS.forEach((foodItem) => {
         const el = createListItemElement(foodItem);
@@ -145,6 +161,7 @@ export function initUI({ onListItemReady, onPlateItemReady }) {
     });
     setChildWaiting();
 
+    setListHeadingIcons();
     renderFoodLists(onListItemReady);
 
     gameState.addEventListener('plate-add', (e) => {

@@ -12,10 +12,22 @@
 
         <div id="title-banner"><span>ハヤちゃんごはんタイム</span></div>
 
-        <div id="heading-left" class="list-heading">ごはん・おかず</div>
+        <div id="heading-left" class="list-heading">
+            <div class="list-heading-badge list-heading-badge--green">
+                <img id="heading-left-icon" class="list-heading-icon" alt="">
+                <span>ごはん・おかず</span>
+            </div>
+            <p class="list-heading-sub">おいしいごはんを えらんでね</p>
+        </div>
         <div id="list-left" class="food-list"></div>
 
-        <div id="heading-right" class="list-heading">デザート</div>
+        <div id="heading-right" class="list-heading">
+            <div class="list-heading-badge list-heading-badge--pink">
+                <img id="heading-right-icon" class="list-heading-icon" alt="">
+                <span>デザート</span>
+            </div>
+            <p class="list-heading-sub">あまいデザートを えらんでね</p>
+        </div>
         <div id="list-right" class="food-list"></div>
 
         <div id="table"></div>
@@ -26,9 +38,15 @@
             <img id="child-face-img" alt="こども">
         </div>
 
+        <p id="serve-hint">すきなたべものを おさらにのせて、「はいどうぞ」を おしてね</p>
+
         <button id="ready-button" class="big-round-button big-round-button--green" type="button">はいどうぞ</button>
 
-        <button id="back-to-start-button" class="big-round-button big-round-button--blue" type="button">さいしょに もどる</button>
+        <button id="back-to-start-button" class="icon-round-button icon-round-button--orange" type="button" aria-label="さいしょに もどる">
+            <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+                <path fill="#fff" d="M12 3.2 2.5 11h2.6v9.3h5.1v-6.2h3.6v6.2h5.1V11h2.6z"></path>
+            </svg>
+        </button>
 
         <div id="drag-layer"></div>
 
