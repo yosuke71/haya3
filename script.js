@@ -22,12 +22,18 @@ async function handleFeedItem(uid) {
     gameState.removePlateItem(uid);
     soundManager.playMogu();
 
+    const isLastItem = gameState.getPlateItems().length === 0;
+
     setTimeout(() => {
         uiManager.setChildMouthOpen(false);
-        if (gameState.getPlateItems().length === 0) {
-            gameState.finish();
-        }
     }, 100);
+
+    // 完食時：バッジが「0こ」になった状態を少し見せてから「ごちそうさま」を表示する
+    if (isLastItem) {
+        setTimeout(() => {
+            gameState.finish();
+        }, 500);
+    }
 }
 
 function init() {
