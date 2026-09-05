@@ -26,6 +26,7 @@ let startOverlayEl;
 let startButtonEl;
 let backToStartButtonEl;
 let serveHintEl;
+let plateCountValueEl;
 
 const SERVE_HINT_PREPARING = 'すきなたべものを おさらにのせて、「はいどうぞ」を おしてね';
 const SERVE_HINT_EATING = 'たべものを おくちに はこんであげてね';
@@ -123,6 +124,11 @@ function handlePlateRemove(item) {
     plateItemElements.delete(item.uid);
 }
 
+// お皿の上の食べ物の数バッジを更新する
+function updatePlateCount() {
+    plateCountValueEl.textContent = String(gameState.getPlateItems().length);
+}
+
 // PREPARING中のみ、皿に食べ物が1つも無ければ「はいどうぞ」を押せなくする
 function updateReadyButtonAvailability() {
     if (gameState.getStatus() !== GameStatus.PREPARING) return;
@@ -162,6 +168,7 @@ export function initUI({ onListItemReady, onPlateItemReady }) {
     startButtonEl = document.getElementById('start-button');
     backToStartButtonEl = document.getElementById('back-to-start-button');
     serveHintEl = document.getElementById('serve-hint');
+    plateCountValueEl = document.getElementById('plate-count-value');
 
     childFaceImgEl.addEventListener('error', () => {
         childFaceContainerEl.classList.add('child-face--fallback');
@@ -174,13 +181,16 @@ export function initUI({ onListItemReady, onPlateItemReady }) {
     gameState.addEventListener('plate-add', (e) => {
         handlePlateAdd(e.detail, onPlateItemReady);
         updateReadyButtonAvailability();
+        updatePlateCount();
     });
     gameState.addEventListener('plate-move', (e) => handlePlateMove(e.detail));
     gameState.addEventListener('plate-remove', (e) => {
         handlePlateRemove(e.detail);
         updateReadyButtonAvailability();
+        updatePlateCount();
     });
     gameState.addEventListener('status-change', (e) => handleStatusChange(e.detail.status));
+    updatePlateCount();
 
     updateReadyButtonAvailability();
 
