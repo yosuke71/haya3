@@ -8,7 +8,7 @@ import * as soundManager from './soundManager.js';
 // 「はいどうぞ」押下：一覧を先に封じ、「いただきます」の画像・音声を最後まで
 // 再生してから、実際に食べさせるモード（EATING）へ進む。
 async function handleServe() {
-    uiManager.lockForServing();
+    gameState.startServing();
     uiManager.setChildItadakimasu();
     await soundManager.playItadakimasu();
     gameState.startEating();

@@ -136,7 +136,11 @@ function updateReadyButtonAvailability() {
 }
 
 function handleStatusChange(status) {
-    if (status === GameStatus.EATING) {
+    if (status === GameStatus.SERVING) {
+        listLeftEl.classList.add('is-disabled');
+        listRightEl.classList.add('is-disabled');
+        readyButtonEl.disabled = true;
+    } else if (status === GameStatus.EATING) {
         listLeftEl.classList.add('is-disabled');
         listRightEl.classList.add('is-disabled');
         readyButtonEl.disabled = true;
@@ -249,13 +253,6 @@ export function setChildItadakimasu() {
     childFaceImgEl.src = CHILD_IMAGES.itadakimasu;
     childFaceImgEl.alt = 'こども（いただきます）';
     childFaceContainerEl.classList.remove('mouth-open');
-}
-
-// 「はいどうぞ」直後、いただきます演出中に一覧・ボタン操作を先んじて封じる
-export function lockForServing() {
-    listLeftEl.classList.add('is-disabled');
-    listRightEl.classList.add('is-disabled');
-    readyButtonEl.disabled = true;
 }
 
 export function playEatAnimation(uid) {

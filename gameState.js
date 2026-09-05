@@ -3,6 +3,7 @@
 
 export const GameStatus = Object.freeze({
     PREPARING: 'PREPARING',
+    SERVING: 'SERVING',
     EATING: 'EATING',
     FINISHED: 'FINISHED',
 });
@@ -70,9 +71,15 @@ class GameState extends EventTarget {
         return item;
     }
 
-    // 「はいどうぞ」ボタン押下
-    startEating() {
+    // 「はいどうぞ」ボタン押下：「いただきます」演出の間は皿を操作できないようにする
+    startServing() {
         if (this.status !== GameStatus.PREPARING) return;
+        this._setStatus(GameStatus.SERVING);
+    }
+
+    // 「いただきます」演出が終わり、実際に食べさせるモードへ
+    startEating() {
+        if (this.status !== GameStatus.SERVING) return;
         this._setStatus(GameStatus.EATING);
         if (this.plateItems.length === 0) {
             this.finish();
