@@ -32,7 +32,7 @@ async function handleFeedItem(uid) {
     if (isLastItem) {
         setTimeout(() => {
             gameState.finish();
-        }, 500);
+        }, 1000);
     }
 }
 
