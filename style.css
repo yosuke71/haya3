@@ -319,7 +319,7 @@ html, body {
 #plate-items-layer {
     position: absolute;
     inset: 0;
-    z-index: 10;
+    z-index: 11;
 }
 
 /* ===== お皿の上の食べ物の数バッジ ===== */
@@ -342,7 +342,7 @@ html, body {
     font-size: 22px;
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
     box-shadow: 0 6px 0 rgba(0, 0, 0, 0.13), 0 10px 18px rgba(74, 47, 24, 0.28);
-    z-index: 30;
+    z-index: 10;
 }
 
 #plate-count-value {
